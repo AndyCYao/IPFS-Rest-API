@@ -1,0 +1,23 @@
+#run with "docker-compose up"
+version: '3'
+services:
+  app:
+    build: ./app
+    volumes:
+      - ./app:/usr/src/app
+    links:
+      - "ipfs"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ipfs
+  
+  # this part needs to be matching 
+  # docker run -d --name ipfs_host -v $ipfs_staging:/export -v $ipfs_data:/data/ipfs -p 4001:4001 -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest
+  ipfs:
+    build: ./ipfs
+    environment:
+      MYSQL_ROOT_PASSWORD: testtest
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"
