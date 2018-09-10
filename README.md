@@ -38,9 +38,12 @@ We want to see public facing documentation that others can use to easily underst
 #### Testing:
 Before submitting the API, make sure that the code is tested. Consider the various forms of testing.
 
-#### BONUS: Authentication + Security:
-Consider how users will authenticate to the API?
-How will the system be secured?
-What are some flaws of the existing systems?
+#### Authentication:
+Review implement a JWT authentication service. more details to come
+
+#### Security
+- Consider how users will authenticate to the API?
+- How will the system be secured?
+- What are some flaws of the existing systems?
 
 Pseudo-code these as comments into the appropriate locations within your code.
