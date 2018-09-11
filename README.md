@@ -39,7 +39,8 @@ We want to see public facing documentation that others can use to easily underst
 Before submitting the API, make sure that the code is tested. Consider the various forms of testing.
 
 #### Authentication:
-Review implement a JWT authentication service. more details to come
+Review and implement a JWT authentication service. JWTs are common methods of authenticating API calls.
+Implement an authentication service either directly into the API or as a separate service.
 
 #### Security
 - Consider how users will authenticate to the API?
