@@ -1,11 +1,47 @@
 from flask import Flask, request as flask_request, Response, abort
 import requests
 import json
+from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
 
-app = Flask(__name__)
 IPFS_BASE_URL = "http://localhost:5001"
 IPFS_API_VER  = "api/v0"
 
+app = Flask(__name__)
+api = Api(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'some-secret-string'
+app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+
+jwt = JWTManager(app)
+
+db = SQLAlchemy(app)
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+
+import models
+import resources
+
+api.add_resource(resources.UserRegistration, '/registration')
+api.add_resource(resources.UserLogin, '/login')
+api.add_resource(resources.UserLogoutAccess, '/logout/access')
+api.add_resource(resources.UserLogoutRefresh, '/logout/refresh')
+api.add_resource(resources.TokenRefresh, '/token/refresh')
+api.add_resource(resources.AllUsers, '/users')
+api.add_resource(resources.SecretResource, '/secret')
+
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    jti = decrypted_token['jti']
+    return models.RevokedTokenModel.is_jti_blacklisted(jti)
 
 @app.route('/')
 def index():
@@ -73,7 +109,3 @@ def delete():
 @app.errorhandler(500)
 def internal_error(error):
     return json.dumps({"error": "Error Handling Data"})
-
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8081, debug=True)

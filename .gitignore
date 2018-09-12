@@ -1,1 +1,5 @@
 ToDoList.md
+.vscode/settings.json
+*.pyc
+demoText.txt
+app.db
