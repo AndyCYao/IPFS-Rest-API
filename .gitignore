@@ -3,3 +3,4 @@ ToDoList.md
 *.pyc
 demoText.txt
 app.db
+setup.cfg
