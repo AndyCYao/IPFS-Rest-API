@@ -1,9 +1,9 @@
 FROM python:3
-MAINTAINER  Andy Yao  <andyyao3@gmail.com>
 
-WORKDIR /usr/src/app
-COPY requirements.txt ./
+# Transfer folder over to container, install the modules
+COPY . /usr/src/rest
+WORKDIR /usr/src/rest
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Run the app
-CMD ["python", "app.py"]
+CMD ["python", "run.py"]

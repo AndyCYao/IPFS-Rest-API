@@ -6,18 +6,20 @@ services:
     volumes:
       - ./app:/usr/src/app
     links:
-      - "ipfs"
+      - ipfs_host
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
-      - ipfs
+      - ipfs_host
   
-  # this part needs to be matching 
-  # docker run -d --name ipfs_host -v $ipfs_staging:/export -v $ipfs_data:/data/ipfs -p 4001:4001 -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest
-  ipfs:
+  ipfs_host:
     build: ./ipfs
-    environment:
-      MYSQL_ROOT_PASSWORD: testtest
-      MYSQL_ROOT_HOST: "%"
+    # Note, I have turn not mount a directory for this demonstration, so everytime we restart
+    # the container it is empty 
+    # volumes:  
+    #   - $ipfs_staging:/export
+    #   - $ipfs_data:/data/ipfs
     ports:
-      - "3306:3306"
+      - "127.0.0.1:5001:5001"
+      - "4001:4001"
+      - "127.0.0.1:8080:8080"

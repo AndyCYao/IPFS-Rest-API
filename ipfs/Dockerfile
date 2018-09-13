@@ -1,4 +1,6 @@
-FROM ipfs_host:latest
-MAINTAINER  Andy Yao  <andyyao3@gmail.com>
+FROM ipfs/go-ipfs:latest
 
 # run steps from https://hub.docker.com/r/jbenet/go-ipfs/
+
+# Run the app
+# CMD ["ipfs", "daemon"]
