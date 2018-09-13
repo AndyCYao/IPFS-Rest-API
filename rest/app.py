@@ -6,9 +6,9 @@ from flask import Flask, request as flask_request, Response, abort
 # from flask_jwt_extended import JWTManager
 # from flask_restful import Api
 
-def create_app():
+def create_app(environment='config.DevelopmentConfig'):
     app = Flask(__name__)
-    app.config.from_object('config.DevelopmentConfig')
+    app.config.from_object(environment)
     return app
 
 # app = Flask(__name__)

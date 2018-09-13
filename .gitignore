@@ -4,3 +4,4 @@ ToDoList.md
 demoText.txt
 app.db
 setup.cfg
+.pytest_cache/
