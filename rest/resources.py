@@ -109,20 +109,18 @@ class SecretResource(Resource):
 class AddFile(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('fileName', help='Required, File Name', required=True)
+    parser.add_argument('fileObj', help='Required, File You Wish to Upload', required=True)
 
     @jwt_required
     def post(self):
         '''connects to /api/v0/add
-        args [file] required
+        args [fileObj] required
         '''
         data = AddFile.parser.parse_args()
-        files = {'files': (data['fileName'], open(data["fileName"], 'rb'))}
+        files = {'files': (data['fileObj'], open(data["fileObj"], 'rb'))}
+        # files = {'files': (data['fileObj'], data["fileObj"])}
+        response = requests.post('{}/{}/add'.format(IPFS_BASE_URL, IPFS_API_VER), files=files)
 
-        response = requests.post('{}/{}/add'.format(IPFS_BASE_URL, IPFS_API_VER),
-                                files=files)
-        print(response)
-        print(response.json())
         if(response.status_code == 200):
             responseJson = response.json()
             responseHash = responseJson["Hash"]
@@ -151,8 +149,7 @@ class DeleteFile(Resource):
         # data  = flask_request.get_json()
         data = DeleteFile.parser.parse_args()
         response = requests.post('{}/{}/pin/rm?arg={}'.format(IPFS_BASE_URL, IPFS_API_VER, data['file']))
-        print(response.status_code)
-        print(response.json())
+
         if response.status_code == 200 and self.garbageCollect() == 200:
             return {
                 'success': True,
