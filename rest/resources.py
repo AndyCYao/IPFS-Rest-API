@@ -1,3 +1,4 @@
+import werkzeug
 from flask_restful import Resource, reqparse
 from models import UserModel, RevokedTokenModel
 from flask_jwt_extended import (create_access_token,
@@ -109,7 +110,11 @@ class SecretResource(Resource):
 class AddFile(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('fileObj', help='Required, File You Wish to Upload', required=True)
+    parser.add_argument('fileObj',
+                        type=werkzeug.datastructures.FileStorage,
+                        help='Required, File You Wish to Upload',
+                        location='files',
+                        required=True)
 
     @jwt_required
     def post(self):
@@ -117,10 +122,8 @@ class AddFile(Resource):
         args [fileObj] required
         '''
         data = AddFile.parser.parse_args()
-        files = {'files': (data['fileObj'], open(data["fileObj"], 'rb'))}
-        # files = {'files': (data['fileObj'], data["fileObj"])}
-        response = requests.post('{}/{}/add'.format(IPFS_BASE_URL, IPFS_API_VER), files=files)
-
+        file = data['fileObj'].read()
+        response = requests.post('{}/{}/add'.format(IPFS_BASE_URL, IPFS_API_VER), files={'files': file})
         if(response.status_code == 200):
             responseJson = response.json()
             responseHash = responseJson["Hash"]

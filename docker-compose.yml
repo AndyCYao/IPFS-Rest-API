@@ -14,8 +14,8 @@ services:
   
   ipfs_host:
     build: ./ipfs
-    # Note, I have turn not mount a directory for this demonstration, so everytime we restart
-    # the container it is empty 
+    # Note, I have not mount a directory for this demonstration, so everytime we restart
+    # the container is empty again
     # volumes:  
     #   - $ipfs_staging:/export
     #   - $ipfs_data:/data/ipfs

@@ -4,7 +4,6 @@ import app as app_module
 from models import db
 import json
 
-
 class FlaskFixture(unittest.TestCase):
     
     def setUp(self):
@@ -23,37 +22,17 @@ class FlaskFixture(unittest.TestCase):
             db.session.remove()
             db.drop_all()
 
-    # def _auth(self, username=None, password=None):
-    #     username = username or 'test'
-    #     password = password or 'test'
-    #     rv = self._post('/api/v1/auth',
-    #                     data=json.dumps({'username': username, 'password': password})
-    #                     )
-    #     return json.loads(rv.data.decode())
+    def _get(self, route, data=None, content_type='application/json', follow_redirects=False, headers=None, token=None):
 
-    def _get(self, route, data=None, content_type=None, follow_redirects=False, headers=None, token=None):
-        content_type = content_type or 'application/json'
         if token:
             headers = {'Authorization': 'Bearer ' + token}
-        return self.client.get(route, data=data, follow_redirects=follow_redirects, content_type=content_type,
-                               headers=headers)
+        return self.client.get(route, data=data, follow_redirects=follow_redirects, content_type=content_type, headers=headers)
 
-    def _post(self, route, data=None, content_type=None, follow_redirects=False, headers=None, token=None):
-        content_type = content_type or 'application/json'
+    def _post(self, route, data=None, content_type='application/json', follow_redirects=False, headers=None, token=None):
+
         if token:
             headers = {'Authorization': 'Bearer ' + token}
-        return self.client.post(route, data=json.dumps(data), follow_redirects=follow_redirects, content_type=content_type,
-                                headers=headers)
-
-    # def _login(self, user='test', password='test'):
-    #     data = {
-    #         'user': user,
-    #         'password': password,
-    #     }
-    #     return self._post('/login', data=json.dumps(data))
-
-    # def _logout(self):
-    #     return self._post('/logout')
+        return self.client.post(route, data=data, follow_redirects=follow_redirects, content_type=content_type, headers=headers)
 
 
 class APITest(FlaskFixture):
@@ -62,14 +41,14 @@ class APITest(FlaskFixture):
         '''mock a user for testing purpose'''
         _user = 'zb'
         _pass = 'andy'
-        res = self._post('/registration', data={"username": _user, "password": _pass})
+        res = self._post('/registration', data=json.dumps({"username": _user, "password": _pass}))
         _decode_res = json.loads(res.data.decode())
         _token = _decode_res['access_token']
         return _user, _pass, _token
 
     def test_register(self):
         '''test register an user, status should be 200, and returns an access token'''
-        res = self._post('/registration', data={"username": "test", "password": "test"})
+        res = self._post('/registration', data=json.dumps({"username": "test", "password": "test"}))
         _decode_res = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 200)
         self.assertIn(u'access_token', _decode_res)
@@ -81,8 +60,8 @@ class APITest(FlaskFixture):
     
     def test_login(self):
         '''test login'''
-        self._post('/registration', data={"username": "test", "password": "test"})
-        res = self._post('/login', data={"username": "test", "password": "test"})
+        self._post('/registration', data=json.dumps({"username": "test", "password": "test"}))
+        res = self._post('/login', data=json.dumps({"username": "test", "password": "test"}))
         _decode_res = json.loads(res.data.decode())
         
         self.assertEqual(res.status_code, 200)
@@ -100,16 +79,32 @@ class APITest(FlaskFixture):
         _decode_res = json.loads(res.data.decode())
         self.assertEqual(42, _decode_res['answer'], "restricted endpoint with access_token")
 
+
+class TestAddDelete(FlaskFixture):
+
+    def _post(self, route, data=None, content_type='application/json', follow_redirects=False, headers=None, token=None):
+        if token:
+            headers = {'Authorization': 'Bearer ' + token}
+        res =  self.client.post(route, data=data, content_type=content_type, headers=headers)
+        print(res)
+        return res 
+
     def test_upload_file(self):
         '''testing the add end point, needs JWT token'''
-        _file = {'fileObj': 'demoText.txt'}
-        res = self._post('/add', data=_file)
+        _file = {
+            'fileObj': ('demoText.txt', open('demoText.txt', 'rb')),
+        }
+        # import io
+        # _file = {
+        #     'fileObj': (io.StringIO("abcdefg"), 'test.txt'), 
+        # }
+        res = self._post('/add', data=_file, content_type='multipart/form-data')
         _decode_res = json.loads(res.data.decode())
         self.assertIn(u'Missing Authorization', _decode_res['msg'], "restricted endpoint")
                  
         # Testing if uploaded with 200 status code, and should have hash code
         _user, _pass, _token = self.get_mock_user()
-        res = self._post('/add', data=_file, token=_token)
+        res = self._post('/add', data=_file, token=_token, content_type='multipart/form-data')
         _decode_res = json.loads(res.data.decode())
         self.assertEqual(200, res.status_code, "successfully uploaded file")
         # Should return file hash, and fileUrl
@@ -119,11 +114,11 @@ class APITest(FlaskFixture):
     def test_delete_file(self):
         '''testing the delete endpoint, needs JWT Token'''
         _user, _pass, _token = self.get_mock_user()
-        _file = {'fileObj': 'demoText2.txt'}
+        _file = {'fileObj': open('demoText2.txt', 'rb')}
         res = self._post('/add', data=_file, token=_token)
         _decode_res = json.loads(res.data.decode())
         _fileHash = _decode_res['fileHash']
-        # Test 
+        # Test
         _file = {'file': _fileHash}
         res = self._post('/delete', data=_file, token=_token)
         _decode_res = json.loads(res.data.decode())
