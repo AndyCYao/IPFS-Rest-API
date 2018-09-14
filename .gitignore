@@ -1,7 +1,6 @@
 ToDoList.md
 .vscode/settings.json
 *.pyc
-demoText.txt
 app.db
 setup.cfg
 .pytest_cache/

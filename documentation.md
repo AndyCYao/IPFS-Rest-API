@@ -4,7 +4,7 @@ This project allows users to upload files to the inter planetary file system (IP
 #### How to Run
 Theres two ways to run the project
 #### 1st Way
-1. in the root folder, enter `docker-compose up`. This will run an API container, and a IPFS daemon container 
+1. in the root folder, enter `docker-compose up`. This will run a Flask API container, and a IPFS daemon container 
 #### 2nd Way
 1. create a new python virtual environment
 2. enter the rest folder, and install environment with

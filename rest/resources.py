@@ -9,6 +9,7 @@ import requests
 
 
 IPFS_BASE_URL = "http://localhost:5001"
+# IPFS_BASE_URL = "http://ipfs_host:5001"
 IPFS_API_VER  = "api/v0"
 
 
@@ -112,7 +113,7 @@ class AddFile(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('fileObj',
                         type=werkzeug.datastructures.FileStorage,
-                        help='Required, File You Wish to Upload',
+                        help='File You Wish to Upload (required)',
                         location='files',
                         required=True)
 
@@ -141,7 +142,7 @@ class AddFile(Resource):
 class DeleteFile(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('file', help='Required, Content Address Of the File', required=True)
+    parser.add_argument('file', help='Content Address Of the File (required)', required=True)
 
     @jwt_required
     def post(self):
