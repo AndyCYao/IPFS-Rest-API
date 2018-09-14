@@ -34,9 +34,6 @@ class FlaskFixture(unittest.TestCase):
             headers = {'Authorization': 'Bearer ' + token}
         return self.client.post(route, data=data, follow_redirects=follow_redirects, content_type=content_type, headers=headers)
 
-
-class APITest(FlaskFixture):
-
     def get_mock_user(self):
         '''mock a user for testing purpose'''
         _user = 'zb'
@@ -45,6 +42,8 @@ class APITest(FlaskFixture):
         _decode_res = json.loads(res.data.decode())
         _token = _decode_res['access_token']
         return _user, _pass, _token
+
+class APITest(FlaskFixture):
 
     def test_register(self):
         '''test register an user, status should be 200, and returns an access token'''
@@ -80,29 +79,25 @@ class APITest(FlaskFixture):
         self.assertEqual(42, _decode_res['answer'], "restricted endpoint with access_token")
 
 
-class TestAddDelete(FlaskFixture):
+class AddDeleteTest(FlaskFixture):
 
     def _post(self, route, data=None, content_type='application/json', follow_redirects=False, headers=None, token=None):
         if token:
             headers = {'Authorization': 'Bearer ' + token}
-        res =  self.client.post(route, data=data, content_type=content_type, headers=headers)
-        print(res)
-        return res 
+        return self.client.post(route, data=data, content_type=content_type, headers=headers)
 
     def test_upload_file(self):
         '''testing the add end point, needs JWT token'''
-        _file = {
-            'fileObj': ('demoText.txt', open('demoText.txt', 'rb')),
-        }
-        # import io
-        # _file = {
-        #     'fileObj': (io.StringIO("abcdefg"), 'test.txt'), 
-        # }
-        res = self._post('/add', data=_file, content_type='multipart/form-data')
+
+        res = self._post('/add', content_type='multipart/form-data')
         _decode_res = json.loads(res.data.decode())
         self.assertIn(u'Missing Authorization', _decode_res['msg'], "restricted endpoint")
                  
         # Testing if uploaded with 200 status code, and should have hash code
+
+        _file = {
+            'fileObj': (open('demoText.txt', 'rb'), 'demoText.txt'),
+        }
         _user, _pass, _token = self.get_mock_user()
         res = self._post('/add', data=_file, token=_token, content_type='multipart/form-data')
         _decode_res = json.loads(res.data.decode())
