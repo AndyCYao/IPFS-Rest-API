@@ -48,15 +48,19 @@ curl -X POST \
 in the `rest` folder there are unit tests for most endpoints. Begin testing with `python test.py`. Note `ipfs daemon` must be running to test the `add` and `delete` endpoints.
 
 #### Repo Organization
-The REST api is created with `flask` framework. the key files are
+The REST api is created with `flask` framework. the key files are:
 
-`app.py` - creates a flask app set up with REST endpoints, includes a SQLite database based on the ORM model described in models
+`app.py` 
+- creates a flask app set up with REST endpoints
+- includes an SQLite database based on the ORM model described in models
 
-`models.py` - this creates an object relational model (ORM) for handling user information, token black list.
+`models.py` 
+- creates an object relational model (ORM) for handling user information
+- declares token black list model
 
-`resources.py` - this file stores the implementation detail of each endpoint. 
+`resources.py` - stores the implementation details of each endpoint. 
 
-`run.py` - main enter point for the app
+`run.py` - main entry point for the app
 
 #### Other Notes
-You can check if a file is uploaded by `ipfs cat content_base__address > result.png` to see if its correct.
+Check if a file has been uploaded correctly by running `ipfs cat content_base__address > result.png`.
