@@ -1,11 +1,10 @@
 #### Introduction
 This project allows users to upload files to the InterPlanetary File System (IPFS). JSON web tokens (JWT) are supported for the `add` and `delete` endpoints. Unit tests are included for the REST layer; consult the section below for instructions.
 
-#### How to Run
-Theres two ways to run the project
-#### 1st Way
-1. in the root folder, enter `docker-compose up`. This will run a Flask API container, and a IPFS daemon container 
-#### 2nd Way
+#### Activating the project
+##### 1st Method
+1. in the root folder, enter `docker-compose up`. This will run a Flask API container, and an IPFS daemon container 
+##### 2nd Method
 1. create a new python virtual environment
 2. enter the rest folder, and install environment with
 `pip install -r requirements.txt`
