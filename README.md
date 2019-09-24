@@ -58,9 +58,11 @@ The REST api is created with `flask` framework. the key files are:
 - creates an object relational model (ORM) for handling user information
 - declares token black list model
 
-`resources.py` - stores the implementation details of each endpoint. 
+`resources.py` 
+- stores the implementation details of each endpoint. 
 
-`run.py` - main entry point for the app
+`run.py` 
+- main entry point for the app
 
 #### Other Notes
 Check if a file has been uploaded correctly by running `ipfs cat content_base__address > result.png`.
