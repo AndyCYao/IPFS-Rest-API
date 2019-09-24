@@ -1,5 +1,5 @@
 #### Introduction
-This project allows users to upload files to the InterPlanetary File System (IPFS). JSON web tokens (JWT) are supported for the `add` and `delete` endpoints. Unit tests are included for the REST layer includes unit tests; consult the section below for instructions.
+This project allows users to upload files to the InterPlanetary File System (IPFS). JSON web tokens (JWT) are supported for the `add` and `delete` endpoints. Unit tests are included for the REST layer; consult the section below for instructions.
 
 #### How to Run
 Theres two ways to run the project
