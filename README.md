@@ -65,4 +65,4 @@ The REST api is created with `flask` framework. the key files are:
 - main entry point for the app
 
 #### Other Notes
-Check if a file has been uploaded correctly by running `ipfs cat content_base__address > result.png`.
+You can ensure that a file has been uploaded correctly by running `ipfs cat content_base__address > result.png`.
