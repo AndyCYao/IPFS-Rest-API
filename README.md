@@ -45,7 +45,7 @@ curl -X POST \
 ```
 
 #### Unit Tests
-in the `rest` folder there are unit tests for most endpoints. Begin testing with `python test.py`. Note `ipfs daemon` must be running to test the `add` and `delete` endpoints.
+There are unit tests for most endpoints in the `rest` folder. Begin testing with `python test.py`. Note that `ipfs daemon` must be running to test the `add` and `delete` endpoints.
 
 #### Repo Organization
 The REST api is created with `flask` framework. the key files are:
