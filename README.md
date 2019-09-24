@@ -12,7 +12,7 @@ This project allows users to upload files to the InterPlanetary File System (IPF
 4. start the IPFS daemon with `ipfs daemon`
 
 #### Sample curl commands
-A set of postman JSON commands can be found at 
+Postman JSON commands can be found at 
 `IPFS Collections.postman_collection` in the main directory
 
 ```
