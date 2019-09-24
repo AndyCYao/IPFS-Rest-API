@@ -3,13 +3,13 @@ This project allows users to upload files to the InterPlanetary File System (IPF
 
 #### Activating the project
 ##### 1st Method
-1. in the root folder, enter `docker-compose up`. This will run a Flask API container, and an IPFS daemon container 
+1. In the root folder, enter `docker-compose up`. This will run a Flask API container and an IPFS daemon container.
 ##### 2nd Method
-1. create a new python virtual environment
-2. enter the rest folder, and install environment with
-`pip install -r requirements.txt`
-3. start the flask API layer with `python run.py`
-4. start the IPFS daemon with `ipfs daemon`
+1. Create a new python virtual environment.
+2. Enter the rest folder, and install environment with
+`pip install -r requirements.txt`.
+3. Start the flask API layer with `python run.py`.
+4. Start the IPFS daemon with `ipfs daemon`.
 
 #### Sample curl commands
 Postman JSON commands can be found at 
