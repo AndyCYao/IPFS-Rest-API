@@ -1,19 +1,18 @@
 #### Introduction
-This project allows users to upload files to the inter planetary file system (IPFS). It supports JSON web tokens (JWT) for the `add` and `delete` endpoints. The REST layer has unit test set up, see below section to activate them.  
+This project allows users to upload files to the InterPlanetary File System (IPFS). JSON web tokens (JWT) are supported for the `add` and `delete` endpoints. Unit tests are included for the REST layer; consult the section below for instructions.
 
-#### How to Run
-Theres two ways to run the project
-#### 1st Way
-1. in the root folder, enter `docker-compose up`. This will run a Flask API container, and a IPFS daemon container 
-#### 2nd Way
-1. create a new python virtual environment
-2. enter the rest folder, and install environment with
-`pip install -r requirements.txt`
-3. start the flask API layer with `python run.py`
-4. start the IPFS daemon with `ipfs daemon`
+#### Activating the project
+##### 1st Method
+1. In the root folder, enter `docker-compose up`. This will run a Flask API container and an IPFS daemon container.
+##### 2nd Method
+1. Create a new python virtual environment.
+2. Enter the rest folder, and install environment with
+`pip install -r requirements.txt`.
+3. Start the flask API layer with `python run.py`.
+4. Start the IPFS daemon with `ipfs daemon`.
 
 #### Sample curl commands
-A set of postman JSON commands can be found at 
+Postman JSON commands can be found at 
 `IPFS Collections.postman_collection` in the main directory
 
 ```
@@ -46,18 +45,24 @@ curl -X POST \
 ```
 
 #### Unit Tests
-in the `rest` folder there are unit tests for most endpoints. Begin testing with `python test.py`. Note `ipfs daemon` must be running to test the `add` and `delete` endpoint
+There are unit tests for most endpoints in the `rest` folder. Begin testing with `python test.py`. Note that `ipfs daemon` must be running to test the `add` and `delete` endpoints.
 
 #### Repo Organization
-The REST api is created with `flask` framework. the key files are
+The REST api is created with `flask` framework. the key files are:
 
-`app.py` - creates a flask app set up with REST endpoints, includes a SQLite database based on the ORM model described in models
+`app.py` 
+- creates a flask app set up with REST endpoints
+- includes an SQLite database based on the ORM model described in models
 
-`models.py` - this creates an object relational model (ORM) for handling user information, token black list.
+`models.py` 
+- creates an object relational model (ORM) for handling user information
+- declares token black list model
 
-`resources.py` - this file stores the implementation detail of each endpoint. 
+`resources.py` 
+- stores the implementation details of each endpoint. 
 
-`run.py` - main enter point for the app
+`run.py` 
+- main entry point for the app
 
 #### Other Notes
-You can check if a file is uploaded by `ipfs cat content_base__address > result.png` to see if its correct.
+You can ensure that a file has been uploaded correctly by running `ipfs cat content_base__address > result.png`.
